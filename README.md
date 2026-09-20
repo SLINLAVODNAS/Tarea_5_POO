@@ -7,3 +7,5 @@ Se implementó el patrón Singleton en el repositorio con constructor privado y 
 LibroService fue modificado para delegar todas las operaciones a través de LibroRepository.getInstance().
 
 Se verificó en la consola que dos llamadas a getInstance() retornan la misma instancia (true).
+
+Se han añadido capturas de pantalla a modo de evidencia en los archivos del repositorio (captura 3 y captura 4)
