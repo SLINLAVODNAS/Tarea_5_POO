@@ -1,19 +1,17 @@
 export class Libro {
-  // 1. Encapsulamiento
+  
   private _id: string;
   private _titulo: string;
   private _autor: string;
   private _anio: number;
 
-  // 2. Constructor
-  constructor(id: string, titulo: string, autor: string, anio: number) {
+constructor(id: string, titulo: string, autor: string, anio: number) {
     this._id = id;
     this._titulo = titulo;
     this._autor = autor;
     this._anio = anio;
   }
 
-  // 3. Getters
   public get id(): string {
     return this._id;
   }
@@ -30,7 +28,6 @@ export class Libro {
     return this._anio;
   }
 
-  // 4. Setters validaciones básicas
   public set titulo(titulo: string) {
     if (titulo.trim().length > 0) {
       this._titulo = titulo;
@@ -49,7 +46,6 @@ export class Libro {
     }
   }
 
-  // 5. Método de la clase
   public obtenerDetalleCompleto(): string {
     return `"${this._titulo}" por ${this._autor} (${this._anio})`;
   }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,8 +12,21 @@ import {
 } from 'react-native';
 import { Libro } from './src/models/Libro';
 import { LibroService } from './src/services/LibroService';
+import { LibroRepository } from './src/repositories/LibroRepository';
 
 export default function App() {
+  // Comprobación del patrón Singleton al iniciar la app
+  useEffect(() => {
+    const repo1 = LibroRepository.getInstance();
+    const repo2 = LibroRepository.getInstance();
+
+    console.log('PRUEBA PATRÓN SINGLETON');
+    console.log('Instancia 1:', repo1);
+    console.log('Instancia 2:', repo2);
+    console.log('¿Ambas llamadas retornan la misma instancia?:', repo1 === repo2);
+    console.log('-------------------------------');
+  }, []);
+
   // Estado local para los libros y los campos del formulario
   const [libros, setLibros] = useState<Libro[]>(LibroService.obtenerLibros());
   const [titulo, setTitulo] = useState<string>('');
@@ -21,24 +34,20 @@ export default function App() {
   const [anio, setAnio] = useState<string>('');
 
   const handleAgregar = () => {
-    // Validar campos vacíos
     if (!titulo.trim() || !autor.trim() || !anio.trim()) {
       Alert.alert('Error', 'Todos los campos son obligatorios.');
       return;
     }
 
-    // Validar que el año sea un número válido
     const anioNumero = parseInt(anio, 10);
     if (isNaN(anioNumero) || anioNumero <= 0) {
       Alert.alert('Error', 'Ingrese un año válido.');
       return;
     }
 
-    // Llamada al servicio
     LibroService.agregarLibro(titulo.trim(), autor.trim(), anioNumero);
     setLibros(LibroService.obtenerLibros());
 
-    // Limpiar campos
     setTitulo('');
     setAutor('');
     setAnio('');
@@ -53,7 +62,6 @@ export default function App() {
     <View style={styles.card}>
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item.titulo}</Text>
-        {/* Uso del método de la clase Libro */}
         <Text style={styles.cardDetail}>{item.obtenerDetalleCompleto()}</Text>
       </View>
       <TouchableOpacity
@@ -70,7 +78,6 @@ export default function App() {
       <StatusBar barStyle="dark-content" />
       <Text style={styles.mainTitle}>Mis Libros</Text>
 
-      {/* Formulario para ingresar datos */}
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -96,7 +103,6 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      {/* Lista de libros */}
       <FlatList
         data={libros}
         keyExtractor={(item) => item.id}
